@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Event
 from datetime import datetime
 from calendar import HTMLCalendar
 import calendar
@@ -22,3 +23,12 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'),
         "cal": cal,
     }
     return render(request, 'events/home.html', context)
+
+
+def all_events(request, *args, **kwargs):
+    event_list = Event.objects.all()
+    context = {
+        'event_list': event_list,
+    }
+
+    return render(request, 'events/event_list.html', context)
