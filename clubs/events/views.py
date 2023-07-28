@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from .models import Event
+from .models import Event, Venue
 from .forms import VenueForm
 from datetime import datetime
 from calendar import HTMLCalendar
@@ -56,3 +56,23 @@ def add_venue(request, *args, **kwargs):
     context['submitted'] = submitted
 
     return render(request, 'events/add_venue.html', context)
+
+
+def list_venue(request, *args, **kwargs):
+    venue_list = Venue.objects.all()
+
+    context = {
+        "venue_list": venue_list,
+    }
+
+    return render(request, 'events/venues.html', context)
+
+
+def show_venue(request, venue_id, *args, **kwargs):
+
+    venue = Venue.objects.get(pk = venue_id)
+
+    context = {
+    }
+
+    return render(request, 'events/show_venue.html', context)
