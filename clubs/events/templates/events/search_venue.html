@@ -1,0 +1,41 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+
+    {% if search_term %}
+
+    <h1>Venue search for "{{search_term}}"</h1>
+
+        {% if venues %}
+
+            {% for venue in venues %}
+
+                <div class="card">
+                    <div class="card-header">
+                        <h1>{{venue.name}}</h1>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{venue.address}}</h4>
+                        <h4 class="card-text">Zip Code: {{venue.zip_code}}</h4>
+                        <h5 class="card-text">{{venue.phone}}</h5>
+                        <h5 class="card-text">{{venue.email}}</h5>
+                        <h5 class="card-text"><a href="{{venue.web}}">{{venue.web}}</a></h5>
+                    </div>
+                </div>
+                <br><br>
+
+            {% endfor %}
+
+        {% else %}
+
+        <h3>Sorry, no venues were found containing the words <strong>{{search_term}}</strong> in their name.</h3>
+
+        {% endif %}
+
+    {% else %}
+
+    <h1>Search Available Venues</h1>
+
+    {% endif %}
+{% endblock %}

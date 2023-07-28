@@ -73,6 +73,20 @@ def show_venue(request, venue_id, *args, **kwargs):
     venue = Venue.objects.get(pk = venue_id)
 
     context = {
+        'venue': venue
     }
 
     return render(request, 'events/show_venue.html', context)
+
+def search_venue(request, *arg, **kwargs):
+
+    if request.method == "POST":
+        search_term = request.POST["SearchBar"]
+        found_venues = Venue.objects.filter(name__contains=search_term)
+
+    context = {
+        "search_term": search_term,
+        "venues": found_venues
+    }
+
+    return render(request, 'events/search_venue.html', context)
