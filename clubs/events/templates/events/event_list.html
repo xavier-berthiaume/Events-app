@@ -8,8 +8,9 @@
     {% for event in event_list %}
 
     <div class="card">
-        <div class="card-header">
-            <h1>{{event.name}}</h1>
+        <div class="card-header d-flex">
+            <h1 class="col-md-11">{{event.name}}</h1>
+            <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary col-md-1">Update</a>
         </div>
         <div class="card-body">
             <h4 class="card-title">{{event.venue.name}}</h4>
