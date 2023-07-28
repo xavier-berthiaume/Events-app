@@ -28,12 +28,60 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'),
 
 
 def all_events(request, *args, **kwargs):
-    event_list = Event.objects.all()
+    event_list = Event.objects.all().order_by('event_date', 'venue')
     context = {
         'event_list': event_list,
     }
 
     return render(request, 'events/event_list.html', context)
+
+
+def add_event(request, *args, **kwargs):
+    submitted = False
+
+    context = {}
+
+    if request.method == "POST":
+        form = EventForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/add_event?submitted=True')
+    else:
+        form = EventForm
+        if 'submitted' in request.GET:
+            submitted = True
+
+    context['form'] = form
+    context['submitted'] = submitted
+
+    return render(request, 'events/add_event.html', context)
+
+
+def update_event(request, event_id, *args, **kwargs):
+    event = Event.objects.get(pk=event_id)
+    form = EventForm(request.POST or None, instance=event)
+
+    if form.is_valid():
+        form.save()
+        return redirect('events-list')
+
+    context = {
+        'event': event,
+        'form': form,
+    }
+
+    return render(request, 'events/update_event.html', context)
+
+
+def delete_event(request, event_id, *args, **kwargs):
+    event = Event.objects.get(pk=event_id)
+    event.delete()
+
+    context = {
+
+    }
+
+    return redirect('events-list')
 
 
 def add_venue(request, *args, **kwargs):
@@ -78,6 +126,7 @@ def show_venue(request, venue_id, *args, **kwargs):
 
     return render(request, 'events/show_venue.html', context)
 
+
 def search_venue(request, *arg, **kwargs):
 
     if request.method == "POST":
@@ -111,37 +160,12 @@ def update_venue(request, venue_id, *args, **kwargs):
     return render(request, 'events/update_venue.html', context)
 
 
-def add_event(request, *args, **kwargs):
-    submitted = False
-
-    context = {}
-
-    if request.method == "POST":
-        form = EventForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/add_event?submitted=True')
-    else:
-        form = EventForm
-        if 'submitted' in request.GET:
-            submitted = True
-
-    context['form'] = form
-    context['submitted'] = submitted
-
-    return render(request, 'events/add_event.html', context)
-
-def update_event(request, event_id, *args, **kwargs):
-    event = Event.objects.get(pk=event_id)
-    form = EventForm(request.POST or None, instance=event)
-
-    if form.is_valid():
-        form.save()
-        return redirect('events-list')
+def delete_venue(request, venue_id, *args, **kwargs):
+    venue = Venue.objects.get(pk=venue_id)
+    venue.delete()
 
     context = {
-        'event': event,
-        'form': form,
+
     }
 
-    return render(request, 'events/update_event.html', context)
+    return redirect('list-venue')

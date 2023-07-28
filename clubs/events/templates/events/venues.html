@@ -15,8 +15,9 @@
                     <h5 class="card-title">{{venue.address}}</h5>
                     <p class="card-text">{{venue.zip_code}}</p>
                     <div class="btn-group" role="group">
-                    <a href="{% url 'show-venue' venue.id %}" class="btn btn-primary">Check it out</a>
-                    <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary">Update</a>
+                    <a href="{% url 'show-venue' venue.id %}" class="btn btn-outline-primary">Check it out</a>
+                    <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-secondary">Update</a>
+                    <a href="{% url 'delete-venue' venue.id %}" class="btn btn-outline-danger">Delete</a>
                     </div>
                 </div>
             </div>
