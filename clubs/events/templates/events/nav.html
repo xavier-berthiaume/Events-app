@@ -9,15 +9,35 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'home' '2021' 'March' %}">March</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'events-list' %}">Events</a>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Events
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{% url 'events-list' %}">Events List</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'add-event' %}">Add Event</a>
+            </li>
+          </ul>
         </li>
-        <li>
-          <a class="nav-link" href="{% url 'add-venue' %}">Add Venue</a>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Venue
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{% url 'list-venue' %}">Venue List</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'add-venue' %}">Add Venue</a>
+            </li>
+          </ul>
         </li>
-        <li>
-          <a class="nav-link" href="{% url 'list-venue' %}">Venues</a>
-        </li>
+
       </ul>
       <form class="d-flex" role="search" method="POST" action="{% url 'search-venue' %}">
       {% csrf_token %}
