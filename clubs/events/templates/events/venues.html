@@ -4,22 +4,26 @@
 
     <h1>Venues</h1>
 
-
+    <div class="row">
 
     {% for venue in venue_list %}
 
-        <div class="col-sm-3">
+        <div class="col-sm-3 mb-3 mb-sm-0">
             <div class="card">
                 <h5 class="card-header">{{venue.name}}</h5>
                 <div class="card-body">
                     <h5 class="card-title">{{venue.address}}</h5>
                     <p class="card-text">{{venue.zip_code}}</p>
+                    <div class="btn-group" role="group">
                     <a href="{% url 'show-venue' venue.id %}" class="btn btn-primary">Check it out</a>
+                    <a href="{% url 'update-venue' venue.id %}" class="btn btn-secondary">Update</a>
+                    </div>
                 </div>
             </div>
         </div>
 
     {% endfor %}
 
+    </div>
 
 {% endblock %}

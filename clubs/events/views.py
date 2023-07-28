@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Event, Venue
 from .forms import VenueForm
 from datetime import datetime
@@ -84,9 +84,28 @@ def search_venue(request, *arg, **kwargs):
         search_term = request.POST["SearchBar"]
         found_venues = Venue.objects.filter(name__contains=search_term)
 
+    else:
+        return render(request, 'events/search_venue.html', {})
+
     context = {
         "search_term": search_term,
         "venues": found_venues
     }
 
     return render(request, 'events/search_venue.html', context)
+
+
+def update_venue(request, venue_id, *args, **kwargs):
+    venue = Venue.objects.get(pk=venue_id)
+    form = VenueForm(request.POST or None, instance=venue)
+
+    if form.is_valid():
+        form.save()
+        return redirect('list-venue')
+
+    context = {
+        'venue': venue,
+        'form': form
+    }
+
+    return render(request, 'events/update_venue.html', context)

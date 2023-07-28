@@ -6,6 +6,7 @@
     {% if search_term %}
 
     <h1>Venue search for "{{search_term}}"</h1>
+    <br><br>
 
         {% if venues %}
 
@@ -35,7 +36,9 @@
 
     {% else %}
 
-    <h1>Search Available Venues</h1>
+    <center>
+        <h1>Search Available Venues</h1>
+    </center>
 
     {% endif %}
 {% endblock %}
