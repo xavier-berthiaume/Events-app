@@ -208,3 +208,40 @@ def venue_csv(request):
         writer.writerow([venue.name, venue.address, venue.zip_code, venue.phone, venue.web, venue.email_address])
 
     return response
+
+def venue_pdf(request):
+    venues = Venue.objects.all()
+#     Create a bytestream buffer
+    buf = io.BytesIO()
+#     Create a canvas
+    file_canvas = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+#     Create a text object
+    text_object = file_canvas.beginText()
+    text_object.setTextOrigin(inch, inch)
+    text_object.setFont("Helvetica", 14)
+
+#     Add lines of text
+
+    lines = []
+
+#     Loop through the objects
+    for venue in venues:
+        lines.append(venue.name)
+        lines.append(venue.address)
+        lines.append(venue.zip_code)
+        lines.append(venue.phone)
+        lines.append(venue.web)
+        lines.append(venue.email_address)
+        lines.append("")
+
+    for line in lines:
+        text_object.textLine(line)
+
+
+#     Finish writing the canvas
+    file_canvas.drawText(text_object)
+    file_canvas.showPage()
+    file_canvas.save()
+    buf.seek(0)
+
+    return FileResponse(buf, as_attachment=True, filename="venues.pdf")
