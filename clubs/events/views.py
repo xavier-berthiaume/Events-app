@@ -1,10 +1,18 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import render, redirect
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
 from datetime import datetime
 from calendar import HTMLCalendar
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+
 import calendar
+import csv
+import io
+
 
 # Create your views here.
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'), *args, **kwargs):
@@ -169,3 +177,34 @@ def delete_venue(request, venue_id, *args, **kwargs):
     }
 
     return redirect('list-venue')
+
+
+def venue_text(request):
+    response = HttpResponse(content_type="text/plain")
+    response['Content-Disposition'] = 'attachment; filename=venues.txt'
+
+    venues = Venue.objects.all()
+
+    lines = []
+
+    for venue in venues:
+        lines.append(f'{venue.name}\n{venue.address}\n{venue.zip_code}\n{venue.phone}\n{venue.web}\n{venue.email_address}\n')
+
+    response.writelines(lines)
+    return response
+
+
+def venue_csv(request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=venues.csv'
+
+    writer = csv.writer(response)
+
+    venues = Venue.objects.all()
+
+    writer.writerow(['Venue Name', 'Address', 'Zip Code', 'Phone Number', 'Web Address', 'Email'])
+
+    for venue in venues:
+        writer.writerow([venue.name, venue.address, venue.zip_code, venue.phone, venue.web, venue.email_address])
+
+    return response
