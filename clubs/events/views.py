@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
 from datetime import datetime
@@ -36,9 +37,15 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'),
 
 
 def all_events(request, *args, **kwargs):
-    event_list = Event.objects.all().order_by('event_date', 'venue')
+    # event_list = Event.objects.all().order_by('event_date', 'venue')
+
+    p = Paginator(Event.objects.all(), 3)
+    page = request.GET.get('page')
+    events = p.get_page(page)
+
     context = {
-        'event_list': event_list,
+        # 'event_list': event_list,
+        'event_list': events,
     }
 
     return render(request, 'events/event_list.html', context)
@@ -71,7 +78,7 @@ def update_event(request, event_id, *args, **kwargs):
 
     if form.is_valid():
         form.save()
-        return redirect('events-list')
+        return redirect('list-event')
 
     context = {
         'event': event,
@@ -89,7 +96,7 @@ def delete_event(request, event_id, *args, **kwargs):
 
     }
 
-    return redirect('events-list')
+    return redirect('list-event')
 
 
 def add_venue(request, *args, **kwargs):

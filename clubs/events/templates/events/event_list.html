@@ -32,4 +32,29 @@
     <br><br><br>
     {% endfor %}
 
+    <div class="row justify-content-center">
+        <div class="col-4">
+        <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if event_list.has_previous %}
+            <li class="page-item"><a href="?page=1" class="page-link">&laquo;First</a></li>
+            <li class="page-item"><a href="?page={{event_list.previous_page_number}}" class="page-link">&lt;Previous</a></li>
+            {% else %}
+            <li class="page-item disabled"><a href="?page=1" class="page-link">&laquo;First</a></li>
+            <li class="page-item disabled"><a href="?page=#" class="page-link">&lt;Previous</a></li>
+            {% endif %}
+
+            <li class="page-item disabled"><a href="#" class="page-link">Page {{event_list.number}} of {{event_list.paginator.num_pages}}</li></a>
+
+            {% if event_list.has_next %}
+            <li class="page-item"><a href="?page={{event_list.next_page_number}}" class="page-link">Next&gt;</a></li>
+            <li class="page-item"><a href="?page={{event_list.num_pages}}" class="page-link">Last&raquo;</a></li>
+            {% else %}
+            <li class="page-item disabled"><a href="?page=#" class="page-link">Next&gt;</a></li>
+            <li class="page-item disabled"><a href="?page={{event_list.num_pages}}" class="page-link">Last&raquo;</a></li>
+            {% endif %}
+        </ul>
+        </nav>
+        </div>
+    </div>
 {% endblock %}

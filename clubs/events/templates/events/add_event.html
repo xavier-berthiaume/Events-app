@@ -10,7 +10,7 @@
 
         <h2>Your event has been submitted successfully.</h2>
 
-        <a class="btn btn-secondary" href="{% url 'add-venue' %}" role="button">Add another event</a>
+        <a class="btn btn-secondary" href="{% url 'add-event' %}" role="button">Add another event</a>
 
         {% else %}
 
@@ -20,6 +20,7 @@
                 {{form.as_p}}
 
                 <input type="submit" value="Submit" class="btn btn-secondary">
+                <a href="{% url 'list-event' %}" class="btn btn-danger">Cancel Submission</a>
             </form>
             {% endif %}
 
