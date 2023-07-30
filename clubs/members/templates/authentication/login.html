@@ -1,21 +1,21 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
-    <div class="container border rounded">
+<!--     <div class="container border rounded"> -->
 
         <h1>Login</h1>
-        <form>
+        <form action='' method=POST>
         {% csrf_token %}
         <div class="mb-3">
             <label for="usernameInput" class="form-label">Username</label>
-            <input type="text" class="form-control" id="usernameInput" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your data with anyone else.</div>
+            <input type="text" class="form-control" id="usernameInput" name="username" aria-describedby="emailHelp">
+            <div id="userHelp" class="form-text">We'll never share your data with anyone else.</div>
         </div>
         <div class="mb-3">
-            <label for="password1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password1">
+            <label for="passwordInput" class="form-label">Password</label>
+            <input type="password" class="form-control" id="passwordInput" name="password">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-    </div>
+<!--     </div> -->
 {% endblock %}
