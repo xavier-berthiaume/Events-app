@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    {% if user.is_authenticated %}
+
     <h1>Events</h1>
     <br><br>
 
@@ -57,4 +59,14 @@
         </nav>
         </div>
     </div>
+
+    {% else %}
+
+    <center>
+
+    <h1><a href="{% url 'register-user'%}">Sign up </a>or <a href="{% url 'login-user' %}">Log in</a> to create and view events!</h1>
+
+    </center>
+
+    {% endif %}
 {% endblock %}

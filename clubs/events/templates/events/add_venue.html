@@ -1,26 +1,39 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
-<center>
-    <h1>Add a new Venue</h1>
-    <br><br>
 
-    {% if submitted %}
+    {% if user.is_authenticated %}
 
-    <h2>Your venue has been submitted successfully.</h2>
+    <center>
+        <h1>Add a new Venue</h1>
+        <br><br>
 
-    <a class="btn btn-secondary" href="{% url 'add-venue' %}" role="button">Add another venue</a>
+        {% if submitted %}
+
+        <h2>Your venue has been submitted successfully.</h2>
+
+        <a class="btn btn-secondary" href="{% url 'add-venue' %}" role="button">Add another venue</a>
+
+        {% else %}
+
+        <form action='' method=POST>
+        {% csrf_token %}
+
+            {{form.as_p}}
+
+            <input type="submit" value="Submit" class="btn btn-secondary">
+        </form>
+        {% endif %}
+
+    </center>
 
     {% else %}
 
-    <form action='' method=POST>
-    {% csrf_token %}
+    <center>
 
-        {{form.as_p}}
+    <h1><a href="{% url 'register-user'%}">Sign up </a>or <a href="{% url 'login-user' %}">Log in</a> to create and view venues!</h1>
 
-        <input type="submit" value="Submit" class="btn btn-secondary">
-    </form>
+    </center>
+
     {% endif %}
-
-</center>
 {% endblock %}

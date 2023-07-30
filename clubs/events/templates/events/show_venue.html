@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    {% if user.is_authenticated %}
+
     <div class="card">
         <div class="card-header">
             <h1>{{venue.name}}</h1>
@@ -14,5 +16,15 @@
             <h5 class="card-text"><a href="{{venue.web}}">{{venue.web}}</a></h5>
         </div>
     </div>
+
+    {% else %}
+
+    <center>
+
+    <h1><a href="{% url 'register-user'%}">Sign up </a>or <a href="{% url 'login-user' %}">Log in</a> to create and view venues!</h1>
+
+    </center>
+
+    {% endif %}
 
 {% endblock %}

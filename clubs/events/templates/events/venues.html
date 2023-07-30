@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    {% if user.is_authenticated %}
+
     <h1>Venues</h1>
 
     <div class="row">
@@ -26,5 +28,15 @@
     {% endfor %}
 
     </div>
+
+    {% else %}
+
+    <center>
+
+    <h1><a href="{% url 'register-user'%}">Sign up </a>or <a href="{% url 'login-user' %}">Log in</a> to create and view venues!</h1>
+
+    </center>
+
+    {% endif %}
 
 {% endblock %}
