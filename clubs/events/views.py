@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Event, Venue
 from .forms import VenueForm, EventForm, EventFormAdmin
@@ -18,7 +19,6 @@ import io
 
 # Create your views here.
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'), *args, **kwargs):
-
     month = month.capitalize()
     month_numeral = list(calendar.month_name).index(month)
     month_numeral = int(month_numeral)
@@ -50,6 +50,16 @@ def all_events(request, *args, **kwargs):
     }
 
     return render(request, 'events/event_list.html', context)
+
+
+def user_events(request, *args, **kwargs):
+    user_events = Event.objects.filter(manager=request.user)
+
+    context = {
+        "user_events": user_events,
+    }
+
+    return render(request, 'events/user_events.html', context)
 
 
 def add_event(request, *args, **kwargs):
@@ -159,9 +169,11 @@ def list_venue(request, *args, **kwargs):
 
 def show_venue(request, venue_id, *args, **kwargs):
     venue = Venue.objects.get(pk = venue_id)
+    venue_owner = User.objects.get(pk = venue.owner)
 
     context = {
-        'venue': venue
+        'venue': venue,
+        'venue_owner': venue_owner,
     }
 
     return render(request, 'events/show_venue.html', context)
