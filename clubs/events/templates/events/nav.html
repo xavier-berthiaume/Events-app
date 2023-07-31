@@ -35,6 +35,7 @@
             <li>
               <a class="dropdown-item" href="{% url 'add-venue' %}">Add Venue</a>
             </li>
+            {% if user.is_authenticated %}
             <li><hr class="dropdown-divider"></li>
             <li>
               <a class="dropdown-item" href="{% url 'venue-text' %}">Download Venue Text</a>
@@ -45,6 +46,7 @@
             <li>
               <a class="dropdown-item" href="{% url 'venue-pdf' %}">Download Venue PDF</a>
             </li>
+            {% endif %}
           </ul>
         </li>
 

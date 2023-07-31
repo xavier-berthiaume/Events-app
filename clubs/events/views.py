@@ -107,7 +107,10 @@ def add_venue(request, *args, **kwargs):
     if request.method == "POST":
         form = VenueForm(request.POST)
         if form.is_valid():
-            form.save()
+            venue = form.save(commit=False)
+            venue.owner = request.user.id
+            venue.save()
+            # form.save()
             return HttpResponseRedirect('/add_venue?submitted=True')
 
     else:
@@ -132,7 +135,6 @@ def list_venue(request, *args, **kwargs):
 
 
 def show_venue(request, venue_id, *args, **kwargs):
-
     venue = Venue.objects.get(pk = venue_id)
 
     context = {
@@ -143,7 +145,6 @@ def show_venue(request, venue_id, *args, **kwargs):
 
 
 def search_venue(request, *arg, **kwargs):
-
     if request.method == "POST":
         search_term = request.POST["SearchBar"]
         found_venues = Venue.objects.filter(name__contains=search_term)
