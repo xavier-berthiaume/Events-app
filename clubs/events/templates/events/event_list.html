@@ -25,7 +25,7 @@
             {% endfor %}
             </ul>
         </div>
-        {% if user == event.manager %}
+        {% if user == event.manager or user.is_superuser%}
         <div class="card-footer text-muted">
             <a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary col-md-1">Update</a>
             <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger col-md-1">Delete</a>

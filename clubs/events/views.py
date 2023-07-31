@@ -1,8 +1,9 @@
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.contrib import messages
 from .models import Event, Venue
-from .forms import VenueForm, EventForm
+from .forms import VenueForm, EventForm, EventFormAdmin
 from datetime import datetime
 from calendar import HTMLCalendar
 
@@ -57,12 +58,25 @@ def add_event(request, *args, **kwargs):
     context = {}
 
     if request.method == "POST":
-        form = EventForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/add_event?submitted=True')
+        if request.user.is_superuser:
+            form = EventFormAdmin(request.POST)
+            if form.is_valid():
+                form.save()
+        else:
+            form = EventForm(request.POST)
+            if form.is_valid():
+                event = form.save(commit=False)
+                event.manager = request.user
+                event.save()
+
+        return HttpResponseRedirect('/add_event?submitted=True')
+
     else:
-        form = EventForm
+        if request.user.is_superuser:
+            form = EventFormAdmin
+        else:
+            form = EventForm
+
         if 'submitted' in request.GET:
             submitted = True
 
@@ -74,7 +88,11 @@ def add_event(request, *args, **kwargs):
 
 def update_event(request, event_id, *args, **kwargs):
     event = Event.objects.get(pk=event_id)
-    form = EventForm(request.POST or None, instance=event)
+
+    if request.user.is_superuser:
+        form = EventFormAdmin(request.POST or None, instance=event)
+    else:
+        form = EventForm(request.POST or None, instance=event)
 
     if form.is_valid():
         form.save()
@@ -90,7 +108,12 @@ def update_event(request, event_id, *args, **kwargs):
 
 def delete_event(request, event_id, *args, **kwargs):
     event = Event.objects.get(pk=event_id)
-    event.delete()
+    if request.user == event.manager or request.user.is_superuser:
+        event.delete()
+        messages.success(request, 'Successful deletion of the event')
+
+    else:
+        message.success(request, "You aren't authorized to delete this event.")
 
     context = {
 
