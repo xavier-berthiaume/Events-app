@@ -30,7 +30,7 @@ class Event(models.Model):
     # venue = models.CharField("Venue Name", max_length=120)
     manager = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     description = models.TextField(blank=True)
-    attendees = models.ManyToManyField(ClubUser, blank=True)
+    attendees = models.ManyToManyField(User, related_name='attendees' ,blank=True)
 
     def __str__(self):
         return self.name

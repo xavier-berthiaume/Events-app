@@ -62,6 +62,21 @@ def user_events(request, *args, **kwargs):
     return render(request, 'events/user_events.html', context)
 
 
+def user_going_events(request, *args, **kwargs):
+    # if not request.user.is_authenticated:
+    #     return redirect('home')
+
+    current_user = request.user.id
+
+    user_going_events = Event.objects.filter(attendees=current_user)
+
+    context = {
+        "user_events": user_going_events
+    }
+
+    return render(request, 'events/user_events.html', context)
+
+
 def add_event(request, *args, **kwargs):
     submitted = False
 
