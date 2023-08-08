@@ -5,9 +5,14 @@ from django.contrib import messages
 
 from .forms import RegisterUserForm
 
+from events.views import getNextYear, getNextMonth
+
 # Create your views here.
 def login_user(request):
-    context = {}
+    context = {
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
+    }
 
     if request.method == "POST":
         username = request.POST.get('username', None)
@@ -27,7 +32,10 @@ def login_user(request):
 
 
 def logout_user(request):
-    context = {}
+    context = {
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
+    }
     logout(request)
     messages.success(request, "You are now logged out")
     return redirect('home')
@@ -35,7 +43,8 @@ def logout_user(request):
 
 def register_user(request):
     context = {
-
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     if request.method == "POST":

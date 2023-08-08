@@ -17,6 +17,22 @@ import csv
 import io
 
 
+def getNextYear():
+    date = datetime.now()
+    if date.month == 12:
+        return date.year + 1
+    else:
+        return date.year
+
+
+def getNextMonth():
+    date = datetime.now()
+    if date.month == 12:
+        return "January"
+    else:
+        return calendar.month_name[date.month+1].capitalize()
+
+
 # Create your views here.
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'), *args, **kwargs):
     month = month.capitalize()
@@ -33,6 +49,8 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'),
         "year": year,
         "month": month,
         "cal": cal,
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
     return render(request, 'events/home.html', context)
 
@@ -47,6 +65,8 @@ def all_events(request, *args, **kwargs):
     context = {
         # 'event_list': event_list,
         'event_list': events,
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return render(request, 'events/event_list.html', context)
@@ -57,6 +77,8 @@ def user_events(request, *args, **kwargs):
 
     context = {
         "user_events": user_events,
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return render(request, 'events/user_events.html', context)
@@ -65,7 +87,10 @@ def user_events(request, *args, **kwargs):
 def add_event(request, *args, **kwargs):
     submitted = False
 
-    context = {}
+    context = {
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
+    }
 
     if request.method == "POST":
         if request.user.is_superuser:
@@ -111,6 +136,8 @@ def update_event(request, event_id, *args, **kwargs):
     context = {
         'event': event,
         'form': form,
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return render(request, 'events/update_event.html', context)
@@ -126,7 +153,8 @@ def delete_event(request, event_id, *args, **kwargs):
         message.success(request, "You aren't authorized to delete this event.")
 
     context = {
-
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return redirect('list-event')
@@ -135,7 +163,10 @@ def delete_event(request, event_id, *args, **kwargs):
 def add_venue(request, *args, **kwargs):
     submitted = False
 
-    context = {}
+    context = {
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
+    }
 
     if request.method == "POST":
         form = VenueForm(request.POST)
@@ -162,6 +193,8 @@ def list_venue(request, *args, **kwargs):
 
     context = {
         "venue_list": venue_list,
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return render(request, 'events/venues.html', context)
@@ -174,6 +207,8 @@ def show_venue(request, venue_id, *args, **kwargs):
     context = {
         'venue': venue,
         'venue_owner': venue_owner,
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return render(request, 'events/show_venue.html', context)
@@ -189,7 +224,9 @@ def search_venue(request, *arg, **kwargs):
 
     context = {
         "search_term": search_term,
-        "venues": found_venues
+        "venues": found_venues,
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return render(request, 'events/search_venue.html', context)
@@ -205,7 +242,9 @@ def update_venue(request, venue_id, *args, **kwargs):
 
     context = {
         'venue': venue,
-        'form': form
+        'form': form,
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return render(request, 'events/update_venue.html', context)
@@ -216,7 +255,8 @@ def delete_venue(request, venue_id, *args, **kwargs):
     venue.delete()
 
     context = {
-
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return redirect('list-venue')
