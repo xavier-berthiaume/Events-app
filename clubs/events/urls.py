@@ -6,6 +6,7 @@ urlpatterns = [
         path('<int:year>/<str:month>/', views.home, name='home'),
         path('events/', views.all_events, name="list-event"),
         path('user_events/', views.user_events, name='user-event'),
+        path('user_going_events/', views.user_going_events, name="user-going-event"),
         path('add_event/', views.add_event, name="add-event"),
         path('update_event/<event_id>', views.update_event, name="update-event"),
         path('delete_event/<event_id>', views.delete_event, name="delete-event"),
