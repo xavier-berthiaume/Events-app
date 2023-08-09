@@ -1,9 +1,55 @@
 {% extends 'events/base.html' %}
 
-    {% block content %}
-    <center>
+{% block content %}
+    <div class="container text-center">
       <h1>Calendar for {{ month }}, {{ year }}</h1>
+      <br/>
+      <center>
+        {{ cal|safe }}
+      </center>
 
-      {{ cal|safe }}
-    </center>
-    {% endblock %}
+    </div>
+
+    <br/><br/>
+
+    <div class="container text-center">
+    {% if events %}
+
+      <h1>Events this Month</h1>
+
+      {% for event in events %}
+
+      <br/>
+      <div class="row">
+        <h2>{{event.name}}</h2>
+        <div class="col-4">
+          <p><strong>Event Description</strong></p>
+          <p>{{event.description}}</p>
+        </div>
+        <div class="col-4">
+          <p><strong>{{event.venue.name}}</strong></p>
+          <p>{{event.event_date}}</p>
+        </div>
+        <div class="col-4">
+          <p><strong>Guest List</strong></p>
+          <ul style="list-style: none;">
+            {% for user in event.attendees.all %}
+            <li>{{ user.first_name }} {{ user.last_name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      {% endfor %}
+
+    {% else %}
+
+        <h3>There's nothing!</h3>
+        <h4>Looks like there aren't any events planned this month yet!</h4>
+        <br/>
+        <a href="{% url 'add-event' %}" class="btn btn-lg btn-outline-secondary">Create an Event</a>
+
+    {% endif %}
+    </div>
+
+{% endblock %}

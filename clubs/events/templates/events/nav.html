@@ -30,6 +30,14 @@
               <a class="dropdown-item" href="{% url 'user-going-event' %}">Attending Events</a>
             </li>
             {% endif %}
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <form class="container" role="search" method="POST" action="{% url 'search-event' %}">
+              {% csrf_token %}
+                  <input class="form-control me-2 dropdown-item" type="search" placeholder="Search" aria-label="Search" name="EventSearchBar">
+                  <button class="btn btn-outline-secondary dropdown-item" type="submit">Search</button>
+              </form>
+            </li>
           </ul>
         </li>
 

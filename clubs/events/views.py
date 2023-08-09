@@ -44,14 +44,21 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'),
     now = datetime.now()
     current_year = now.year
 
+    event_list = Event.objects.filter(
+        event_date__year = year,
+        event_date__month = month_numeral
+    )
+
     context = {
         "current_year": current_year,
         "year": year,
         "month": month,
         "cal": cal,
+        "events": event_list,
         "next_month": getNextMonth(),
         "next_year": getNextYear(),
     }
+
     return render(request, 'events/home.html', context)
 
 
@@ -93,7 +100,9 @@ def user_going_events(request, *args, **kwargs):
     user_going_events = Event.objects.filter(attendees=current_user)
 
     context = {
-        "user_events": user_going_events
+        "user_events": user_going_events,
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
     }
 
     return render(request, 'events/user_events.html', context)
@@ -173,6 +182,26 @@ def delete_event(request, event_id, *args, **kwargs):
     }
 
     return redirect('list-event')
+
+
+def search_event(request, *arg, **kwargs):
+
+    context = {
+        "next_month": getNextMonth(),
+        "next_year": getNextYear(),
+    }
+
+    if request.method == "POST":
+        search_term = request.POST["EventSearchBar"]
+        found_events = Event.objects.filter(name__contains=search_term)
+
+    else:
+        return render(request, 'events/search_venue.html', context)
+
+    context["search_term"] = search_term
+    context["event_list"] = found_events
+
+    return render(request, 'events/search_event.html', context)
 
 
 def add_venue(request, *args, **kwargs):
